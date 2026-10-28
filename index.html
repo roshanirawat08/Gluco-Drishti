@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlucoDrishti - AI Diabetic Eye & Health Screening Platform (Pune, Maharashtra)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Medical & Explainable AI Retinopathy Visual Environment -->
+  <div class="medical-ai-bg" id="medicalAiBg" aria-hidden="true">
+    <div class="bg-mesh-gradient"></div>
+    <canvas id="retinaAiCanvas" class="bg-canvas"></canvas>
+    <div class="retina-svg-layer">
+      <svg class="retina-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Optic Disc Luminance Aura -->
+          <radialGradient id="opticDiscGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ccfbf1" stop-opacity="0.95" />
+            <stop offset="35%" stop-color="#2dd4bf" stop-opacity="0.45" />
+            <stop offset="70%" stop-color="#0284c7" stop-opacity="0.15" />
+            <stop offset="100%" stop-color="#0284c7" stop-opacity="0" />
+          </radialGradient>
+
+          <!-- Macular / Foveal Focus Gradient -->
+          <radialGradient id="foveaGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#818cf8" stop-opacity="0.32" />
+            <stop offset="50%" stop-color="#6366f1" stop-opacity="0.1" />
+            <stop offset="100%" stop-color="#6366f1" stop-opacity="0" />
+          </radialGradient>
+
+          <!-- Primary Retinal Vascular Arcade Gradient (Teal -> Azure -> Synaptic Violet) -->
+          <linearGradient id="vesselTealGrad" x1="100%" y1="50%" x2="0%" y2="50%">
+            <stop offset="0%" stop-color="#0d9488" stop-opacity="0.35" />
+            <stop offset="38%" stop-color="#0284c7" stop-opacity="0.30" />
+            <stop offset="78%" stop-color="#6366f1" stop-opacity="0.25" />
+            <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.20" />
+          </linearGradient>
+
+          <!-- Micro-Vessel Branch Gradient -->
+          <linearGradient id="vesselBranchGrad" x1="100%" y1="50%" x2="0%" y2="50%">
+            <stop offset="0%" stop-color="#0d9488" stop-opacity="0.28" />
+            <stop offset="55%" stop-color="#0284c7" stop-opacity="0.22" />
+            <stop offset="100%" stop-color="#6366f1" stop-opacity="0.18" />
+          </linearGradient>
+
+          <!-- Neural Network Synapse Line Gradient -->
+          <linearGradient id="synapseLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6366f1" stop-opacity="0.32" />
+            <stop offset="50%" stop-color="#0ea5e9" stop-opacity="0.26" />
+            <stop offset="100%" stop-color="#0d9488" stop-opacity="0.32" />
+          </linearGradient>
+
+          <!-- Peripheral Micro-Dot Diagnostic Grid -->
+          <pattern id="microGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.2" fill="#0d9488" fill-opacity="0.07" />
+          </pattern>
+        </defs>
+
+        <!-- Peripheral Diagnostic Micro-Dot Matrix -->
+        <rect x="750" y="0" width="1170" height="1080" fill="url(#microGrid)" />
+
+        <!-- ====================================================================
+             1. CLINICAL RETINAL FUNDUS OCULI & OPTICAL SYSTEM
+             ==================================================================== -->
+        <!-- Outer Diagnostic Calibrated Boundary (FOV 45deg Standard) -->
+        <circle cx="1560" cy="540" r="470" stroke="#0d9488" stroke-opacity="0.09" stroke-width="1.5" stroke-dasharray="6 8" />
+        <circle cx="1560" cy="540" r="360" stroke="#0284c7" stroke-opacity="0.14" stroke-width="1" />
+        <circle cx="1560" cy="540" r="240" stroke="#6366f1" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3 6" />
+
+        <!-- Angular Graduation Reticle Ticks around 360px circle -->
+        <line x1="1920" y1="540" x2="1910" y2="540" stroke="#0284c7" stroke-opacity="0.3" stroke-width="1.5" />
+        <line x1="1200" y1="540" x2="1210" y2="540" stroke="#0284c7" stroke-opacity="0.3" stroke-width="1.5" />
+        <line x1="1560" y1="180" x2="1560" y2="190" stroke="#0284c7" stroke-opacity="0.3" stroke-width="1.5" />
+        <line x1="1560" y1="900" x2="1560" y2="890" stroke="#0284c7" stroke-opacity="0.3" stroke-width="1.5" />
+        <line x1="1814" y1="285" x2="1807" y2="292" stroke="#0284c7" stroke-opacity="0.25" stroke-width="1.2" />
+        <line x1="1306" y1="795" x2="1313" y2="788" stroke="#0284c7" stroke-opacity="0.25" stroke-width="1.2" />
+        <line x1="1814" y1="795" x2="1807" y2="788" stroke="#0284c7" stroke-opacity="0.25" stroke-width="1.2" />
+        <line x1="1306" y1="285" x2="1313" y2="292" stroke="#0284c7" stroke-opacity="0.25" stroke-width="1.2" />
+
+        <!-- Fovea Centralis & Macular Region (Temporal to Optic Disc) -->
+        <g id="macularRegion">
+          <circle cx="1380" cy="540" r="90" fill="url(#foveaGlow)" />
+          <circle cx="1380" cy="540" r="54" stroke="#0ea5e9" stroke-opacity="0.24" stroke-width="1.2" stroke-dasharray="4 4" />
+          <circle cx="1380" cy="540" r="22" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1" />
+          <circle cx="1380" cy="540" r="4" fill="#6366f1" fill-opacity="0.4" />
+          <!-- Fine Optical Alignment Reticle Crosshair -->
+          <line x1="1362" y1="540" x2="1398" y2="540" stroke="#0ea5e9" stroke-opacity="0.35" stroke-width="1" />
+          <line x1="1380" y1="522" x2="1380" y2="558" stroke="#0ea5e9" stroke-opacity="0.35" stroke-width="1" />
+          <!-- XAI Target Corners -->
+          <path d="M 1320,490 L 1310,490 L 1310,500" stroke="#0ea5e9" stroke-opacity="0.3" stroke-width="1.5" />
+          <path d="M 1440,490 L 1450,490 L 1450,500" stroke="#0ea5e9" stroke-opacity="0.3" stroke-width="1.5" />
+          <path d="M 1320,590 L 1310,590 L 1310,580" stroke="#0ea5e9" stroke-opacity="0.3" stroke-width="1.5" />
+          <path d="M 1440,590 L 1450,590 L 1450,580" stroke="#0ea5e9" stroke-opacity="0.3" stroke-width="1.5" />
+        </g>
+
+        <!-- Optic Nerve Head / Optic Disc Landmark (The Source of Retinal Blood Vessels) -->
+        <g id="opticDisc" class="pulse-node-slow">
+          <circle cx="1630" cy="520" r="46" fill="url(#opticDiscGlow)" stroke="#2dd4bf" stroke-opacity="0.4" stroke-width="1.5" />
+          <circle cx="1630" cy="520" r="20" fill="#f0fdfa" fill-opacity="0.55" stroke="#0d9488" stroke-opacity="0.45" stroke-width="1.2" />
+          <circle cx="1630" cy="520" r="7" fill="#0d9488" fill-opacity="0.6" />
+        </g>
+
+        <!-- ====================================================================
+             2. SUBTLE RETINAL BLOOD-VESSEL STRUCTURES (VASCULAR ARCADES)
+             Physiological Bezier Curves: Superior & Inferior Temporal Vessels
+             ==================================================================== -->
+        <!-- Superior Temporal Vascular Arcade (Main Arteriole Arch) -->
+        <path d="M 1630,520 C 1605,415 1545,285 1425,195 C 1325,115 1195,80 1060,75"
+              stroke="url(#vesselTealGrad)" stroke-width="2.8" stroke-linecap="round" fill="none" class="vessel-path" />
+
+        <!-- Superior Secondary Bifurcations (Arterioles arching to Macula and Periphery) -->
+        <path d="M 1545,285 C 1485,335 1425,385 1365,405"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 1425,195 C 1385,125 1305,60 1195,35"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+        <path d="M 1195,80 C 1125,50 1025,55 935,25"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.4" stroke-linecap="round" fill="none" />
+        <path d="M 1365,405 C 1315,425 1265,415 1205,395"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.2" stroke-linecap="round" fill="none" />
+
+        <!-- Inferior Temporal Vascular Arcade (Main Venule Arch) -->
+        <path d="M 1630,520 C 1605,625 1545,755 1425,845 C 1325,925 1195,960 1060,965"
+              stroke="url(#vesselTealGrad)" stroke-width="2.8" stroke-linecap="round" fill="none" class="vessel-path-reverse" />
+
+        <!-- Inferior Secondary Bifurcations (Venules arching to Macula and Periphery) -->
+        <path d="M 1545,755 C 1485,705 1425,655 1365,635"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 1425,845 C 1385,915 1305,980 1195,1005"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.6" stroke-linecap="round" fill="none" />
+        <path d="M 1195,960 C 1125,990 1025,985 935,1015"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.4" stroke-linecap="round" fill="none" />
+        <path d="M 1365,635 C 1315,615 1265,625 1205,645"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.2" stroke-linecap="round" fill="none" />
+
+        <!-- Nasal Branches (Extending towards right edge) -->
+        <path d="M 1630,520 C 1705,445 1785,405 1885,385"
+              stroke="url(#vesselBranchGrad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+        <path d="M 1630,520 C 1705,595 1785,635 1885,655"
+              stroke="url(#vesselBranchGrad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+        <path d="M 1785,405 C 1835,335 1895,295 1955,275"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.5" stroke-linecap="round" fill="none" />
+        <path d="M 1785,635 C 1835,705 1895,745 1955,765"
+              stroke="url(#vesselBranchGrad)" stroke-width="1.5" stroke-linecap="round" fill="none" />
+
+        <!-- ====================================================================
+             3. TRANSITION INTO AI NEURAL-NETWORK LATTICE & SYNAPTIC NODES
+             Connecting biological retinal vasculature into deep learning feature graph
+             ==================================================================== -->
+        <!-- Superior Synaptic Vectors -->
+        <path d="M 1060,75 L 960,90 L 860,55 L 760,105 L 680,75" stroke="url(#synapseLineGrad)" stroke-width="1.4" stroke-dasharray="4 3" fill="none" />
+        <path d="M 935,25 L 860,55 L 890,135 L 960,90" stroke="url(#synapseLineGrad)" stroke-width="1.2" fill="none" />
+        <path d="M 1195,35 L 1115,15 L 1035,35" stroke="url(#synapseLineGrad)" stroke-width="1.2" stroke-dasharray="2 4" fill="none" />
+        <path d="M 860,55 L 780,30 L 710,50" stroke="url(#synapseLineGrad)" stroke-width="1" stroke-dasharray="3 3" fill="none" />
+        <path d="M 890,135 L 980,180 L 1080,150" stroke="url(#synapseLineGrad)" stroke-width="1" stroke-dasharray="3 4" fill="none" />
+
+        <!-- Inferior Synaptic Vectors -->
+        <path d="M 1060,965 L 960,950 L 860,985 L 760,935 L 680,965" stroke="url(#synapseLineGrad)" stroke-width="1.4" stroke-dasharray="4 3" fill="none" />
+        <path d="M 935,1015 L 860,985 L 890,905 L 960,950" stroke="url(#synapseLineGrad)" stroke-width="1.2" fill="none" />
+        <path d="M 1195,1005 L 1115,1025 L 1035,1005" stroke="url(#synapseLineGrad)" stroke-width="1.2" stroke-dasharray="2 4" fill="none" />
+        <path d="M 860,985 L 780,1010 L 710,990" stroke="url(#synapseLineGrad)" stroke-width="1" stroke-dasharray="3 3" fill="none" />
+        <path d="M 890,905 L 980,860 L 1080,890" stroke="url(#synapseLineGrad)" stroke-width="1" stroke-dasharray="3 4" fill="none" />
+
+        <!-- Central Paracentral Transition Vectors -->
+        <path d="M 1205,395 L 1135,435 L 1075,415 L 1015,465" stroke="url(#synapseLineGrad)" stroke-width="1.2" stroke-dasharray="4 4" fill="none" />
+        <path d="M 1205,645 L 1135,605 L 1075,625 L 1015,575" stroke="url(#synapseLineGrad)" stroke-width="1.2" stroke-dasharray="4 4" fill="none" />
+
+        <!-- Right Margin AI Array -->
+        <path d="M 1885,385 L 1825,275 L 1905,205 L 1845,125" stroke="url(#synapseLineGrad)" stroke-width="1.4" stroke-dasharray="4 3" fill="none" />
+        <path d="M 1885,655 L 1825,765 L 1905,835 L 1845,915" stroke="url(#synapseLineGrad)" stroke-width="1.4" stroke-dasharray="4 3" fill="none" />
+        <path d="M 1825,275 L 1740,240 L 1780,160" stroke="url(#synapseLineGrad)" stroke-width="1" stroke-dasharray="3 3" fill="none" />
+        <path d="M 1825,765 L 1740,800 L 1780,880" stroke="url(#synapseLineGrad)" stroke-width="1" stroke-dasharray="3 3" fill="none" />
+
+        <!-- ====================================================================
+             4. GLOWING AI NEURAL NODES (PULSING SYNAPSE VERTICES)
+             ==================================================================== -->
+        <!-- Superior Nodes -->
+        <g class="pulse-node"><circle cx="1060" cy="75" r="4.5" fill="#0d9488" /><circle cx="1060" cy="75" r="9" stroke="#14b8a6" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node-delayed"><circle cx="960" cy="90" r="4" fill="#0284c7" /><circle cx="960" cy="90" r="8" stroke="#38bdf8" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node"><circle cx="860" cy="55" r="4.5" fill="#6366f1" /><circle cx="860" cy="55" r="9" stroke="#818cf8" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node-slow"><circle cx="760" cy="105" r="3.5" fill="#8b5cf6" /><circle cx="760" cy="105" r="7" stroke="#a78bfa" stroke-opacity="0.3" fill="none" /></g>
+        <g class="pulse-node-delayed"><circle cx="890" cy="135" r="3.5" fill="#0d9488" /></g>
+        <g class="pulse-node"><circle cx="935" cy="25" r="3" fill="#0ea5e9" /></g>
+        <g class="pulse-node-slow"><circle cx="1195" cy="35" r="3.5" fill="#0d9488" /></g>
+        <g class="pulse-node-delayed"><circle cx="1115" cy="15" r="3" fill="#6366f1" /></g>
+
+        <!-- Inferior Nodes -->
+        <g class="pulse-node-delayed"><circle cx="1060" cy="965" r="4.5" fill="#0d9488" /><circle cx="1060" cy="965" r="9" stroke="#14b8a6" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node"><circle cx="960" cy="950" r="4" fill="#0284c7" /><circle cx="960" cy="950" r="8" stroke="#38bdf8" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node-slow"><circle cx="860" cy="985" r="4.5" fill="#6366f1" /><circle cx="860" cy="985" r="9" stroke="#818cf8" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node-delayed"><circle cx="760" cy="935" r="3.5" fill="#8b5cf6" /><circle cx="760" cy="935" r="7" stroke="#a78bfa" stroke-opacity="0.3" fill="none" /></g>
+        <g class="pulse-node"><circle cx="890" cy="905" r="3.5" fill="#0d9488" /></g>
+        <g class="pulse-node-slow"><circle cx="935" cy="1015" r="3" fill="#0ea5e9" /></g>
+        <g class="pulse-node-delayed"><circle cx="1195" cy="1005" r="3.5" fill="#0d9488" /></g>
+        <g class="pulse-node"><circle cx="1115" cy="1025" r="3" fill="#6366f1" /></g>
+
+        <!-- Right Periphery Nodes -->
+        <g class="pulse-node"><circle cx="1825" cy="275" r="4" fill="#0ea5e9" /><circle cx="1825" cy="275" r="8" stroke="#38bdf8" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node-delayed"><circle cx="1905" cy="205" r="3.5" fill="#6366f1" /></g>
+        <g class="pulse-node-slow"><circle cx="1825" cy="765" r="4" fill="#0ea5e9" /><circle cx="1825" cy="765" r="8" stroke="#38bdf8" stroke-opacity="0.35" fill="none" /></g>
+        <g class="pulse-node"><circle cx="1905" cy="835" r="3.5" fill="#6366f1" /></g>
+
+        <!-- ====================================================================
+             5. EXPLAINABLE AI (XAI) & OPHTHALMIC TELEMETRY ACCENTS
+             ==================================================================== -->
+        <text x="1380" y="468" text-anchor="middle" class="xai-mono">[FOVEA CENTRALIS • 0.00° / 540nm]</text>
+        <text x="1630" y="455" text-anchor="middle" class="xai-mono">[OPTIC NERVE HEAD • ONH]</text>
+        <text x="960" y="72" class="xai-mono">[XAI LAYER: RESNET-50 CONV5_BLOCK3]</text>
+        <text x="960" y="932" class="xai-mono-purple">[ATTENTION HEATMAP: GRAD-CAM TRIAGE]</text>
+        <text x="1560" y="1035" text-anchor="middle" class="xai-mono">AI DIABETIC RETINOPATHY TRIAGE • PUNE RURAL HEALTH PROTOCOL • FOV 45°</text>
+        <text x="1835" y="110" class="xai-mono-purple">[LATENT SYNAPSE: 512-D]</text>
+        <text x="1835" y="940" class="xai-mono">[DIABETIC RISK CLASSIFIER]</text>
+      </svg>
+    </div>
+    <div class="bg-vignette-overlay"></div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="activity"></i>
+        </div>
+        <div>
+          <span class="brand-title">GlucoDrishti <span class="brand-badge">AI Pune</span></span>
+          <p class="brand-sub">Intelligent Pre-Clinical Diabetic & Retinopathy Triage • Pune, Maharashtra</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="quickDemoBtn" class="btn btn-outline-primary btn-sm" title="Autofill a sample diabetic patient from Pune">
+          <i data-lucide="sparkles"></i>
+          <span>Autofill Pune Diabetic Case</span>
+        </button>
+        <button id="resetSessionBtn" class="btn btn-ghost btn-sm" title="Clear all and restart">
+          <i data-lucide="rotate-ccw"></i>
+          <span>Reset</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- Main Container -->
+  <main class="main-wrapper">
+    <!-- Stepper Navigation (Reflecting User's 4 Pages) -->
+    <nav class="stepper-nav" aria-label="Assessment Progress">
+      <div class="stepper-item active" data-step="1" id="navStep1">
+        <div class="stepper-circle">
+          <span class="step-number">1</span>
+          <i data-lucide="check" class="step-check"></i>
+        </div>
+        <div class="stepper-label">
+          <span class="step-title">Page 1</span>
+          <span class="step-subtitle">Personal & Diabetes Info</span>
+        </div>
+      </div>
+      <div class="stepper-line" id="stepLine1"></div>
+      <div class="stepper-item" data-step="2" id="navStep2">
+        <div class="stepper-circle">
+          <span class="step-number">2</span>
+          <i data-lucide="check" class="step-check"></i>
+        </div>
+        <div class="stepper-label">
+          <span class="step-title">Page 2</span>
+          <span class="step-subtitle">Retina, Nails & Symptoms</span>
+        </div>
+      </div>
+      <div class="stepper-line" id="stepLine2"></div>
+      <div class="stepper-item" data-step="3" id="navStep3">
+        <div class="stepper-circle">
+          <span class="step-number">3</span>
+          <i data-lucide="check" class="step-check"></i>
+        </div>
+        <div class="stepper-label">
+          <span class="step-title">Page 3</span>
+          <span class="step-subtitle">Data Review & Chances</span>
+        </div>
+      </div>
+      <div class="stepper-line" id="stepLine3"></div>
+      <div class="stepper-item" data-step="4" id="navStep4">
+        <div class="stepper-circle">
+          <span class="step-number">4</span>
+          <i data-lucide="check" class="step-check"></i>
+        </div>
+        <div class="stepper-label">
+          <span class="step-title">Page 4</span>
+          <span class="step-subtitle">Diagnosis & Pune Doctors</span>
+        </div>
+      </div>
+    </nav>
+    <!-- STEP 1: PERSONAL & DIABETIC PROFILE -->
+    <section class="step-section active" id="page1Section">
+      <div class="card glass-card">
+        <div class="card-header">
+          <div class="header-badge">Page 1 of 4 • Diabetes Triage</div>
+          <h2 class="card-title">Personal & Diabetes Profile</h2>
+          <p class="card-desc">Enter demographic and glycemic metrics to assess your diabetic risk and calibrate AI computer vision.</p>
+        </div>
+        <form id="personalForm" class="form-grid" novalidate>
+          <div class="form-group col-span-2">
+            <label for="fullName" class="form-label">
+              <i data-lucide="user"></i> Full Name <span class="required">*</span>
+            </label>
+            <input type="text" id="fullName" class="form-input" placeholder="e.g. Ramesh Joshi / Priya Deshmukh" required>
+            <span class="error-msg" id="nameError">Please enter your full name.</span>
+          </div>
+          <div class="form-group">
+            <label for="age" class="form-label">
+              <i data-lucide="calendar"></i> Age (years) <span class="required">*</span>
+            </label>
+            <input type="number" id="age" class="form-input" placeholder="e.g. 52" min="1" max="120" required>
+            <span class="error-msg" id="ageError">Please enter a valid age (1-120).</span>
+          </div>
+          <div class="form-group">
+            <label for="gender" class="form-label">
+              <i data-lucide="users"></i> Gender <span class="required">*</span>
+            </label>
+            <select id="gender" class="form-select" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+            <span class="error-msg" id="genderError">Please select gender.</span>
+          </div>
+          <div class="form-group">
+            <label for="height" class="form-label">
+              <i data-lucide="ruler"></i> Height (cm) <span class="required">*</span>
+            </label>
+            <input type="number" id="height" class="form-input" placeholder="e.g. 172" min="50" max="250" required>
+            <span class="error-msg" id="heightError">Please enter height in cm (50-250).</span>
+          </div>
+          <div class="form-group">
+            <label for="weight" class="form-label">
+              <i data-lucide="scale"></i> Weight (kg) <span class="required">*</span>
+            </label>
+            <input type="number" id="weight" class="form-input" placeholder="e.g. 76" min="20" max="300" required>
+            <span class="error-msg" id="weightError">Please enter weight in kg (20-300).</span>
+          </div>
+          <!-- Real-time Asian BMI Calculator -->
+          <div class="bmi-pill-card col-span-2" id="bmiPill">
+            <div class="bmi-info">
+              <i data-lucide="heart-pulse"></i>
+              <span>Calculated BMI: <strong id="bmiValue">--</strong></span>
+              <span class="bmi-category" id="bmiCategory">Enter height and weight</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="bloodGroup" class="form-label">
+              <i data-lucide="droplet"></i> Blood Group <span class="required">*</span>
+            </label>
+            <select id="bloodGroup" class="form-select" required>
+              <option value="">Select Blood Group</option>
+              <option value="B+">B+ (Common in India)</option>
+              <option value="O+">O+</option>
+              <option value="A+">A+</option>
+              <option value="AB+">AB+</option>
+              <option value="B-">B-</option>
+              <option value="O-">O-</option>
+              <option value="A-">A-</option>
+              <option value="AB-">AB-</option>
+              <option value="Unknown">Don't Know</option>
+            </select>
+            <span class="error-msg" id="bloodGroupError">Please select a blood group.</span>
+          </div>
+          <!-- Pune Location Autocomplete -->
+          <div class="form-group">
+            <label for="location" class="form-label">
+              <i data-lucide="map-pin"></i> Location in Pune, Maharashtra <span class="required">*</span>
+            </label>
+            <div class="input-with-action">
+              <input type="text" id="location" class="form-input" list="puneLocationsList" placeholder="e.g. Kothrud, Pune / Shivajinagar, Pune" required>
+              <button type="button" id="detectLocationBtn" class="action-btn" title="Autodetect Pune GPS location">
+                <i data-lucide="crosshair"></i>
+              </button>
+            </div>
+            <datalist id="puneLocationsList">
+              <option value="Kothrud, Pune, Maharashtra"></option>
+              <option value="Shivajinagar, Pune, Maharashtra"></option>
+              <option value="Hinjawadi, Pune, Maharashtra"></option>
+              <option value="Viman Nagar, Pune, Maharashtra"></option>
+              <option value="Baner, Pune, Maharashtra"></option>
+              <option value="Hadapsar, Pune, Maharashtra"></option>
+              <option value="Deccan Gymkhana, Pune, Maharashtra"></option>
+              <option value="Aundh, Pune, Maharashtra"></option>
+              <option value="Kalyani Nagar, Pune, Maharashtra"></option>
+              <option value="Wakad, Pune, Maharashtra"></option>
+              <option value="Bavdhan, Pune, Maharashtra"></option>
+              <option value="Pimpri-Chinchwad, Pune, Maharashtra"></option>
+              <option value="Swargate, Pune, Maharashtra"></option>
+              <option value="Camp / MG Road, Pune, Maharashtra"></option>
+            </datalist>
+            <span class="error-msg" id="locationError">Please enter your Pune locality.</span>
+          </div>
+          <!-- Diabetes Specific Options -->
+          <div class="form-group col-span-2">
+            <label class="form-label">
+              <i data-lucide="shield-alert"></i> Diabetes Classification <span class="required">*</span>
+            </label>
+            <div class="checkbox-chip-group">
+              <label class="chip-checkbox">
+                <input type="radio" name="diabetesType" value="Type 2 Diabetes" checked>
+                <span>Type 2 Diabetes (Adult Onset)</span>
+              </label>
+              <label class="chip-checkbox">
+                <input type="radio" name="diabetesType" value="Type 1 Diabetes">
+                <span>Type 1 Diabetes (Insulin Dependent)</span>
+              </label>
+              <label class="chip-checkbox">
+                <input type="radio" name="diabetesType" value="Pre-Diabetes / Borderline">
+                <span>Pre-Diabetes (Impaired Glucose)</span>
+              </label>
+              <label class="chip-checkbox">
+                <input type="radio" name="diabetesType" value="Gestational Diabetes">
+                <span>Gestational Diabetes</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="diabetesDuration" class="form-label">
+              <i data-lucide="clock"></i> Duration of Diabetes
+            </label>
+            <select id="diabetesDuration" class="form-select">
+              <option value="Newly Diagnosed (< 1 yr)">Newly Diagnosed (&lt; 1 year)</option>
+              <option value="1 to 5 years">1 to 5 years</option>
+              <option value="5 to 10 years" selected>5 to 10 years (Elevated Retinopathy Risk)</option>
+              <option value="Over 10 years">Over 10 years (High Risk for Complications)</option>
+            </select>
+          </div>
+           <div class="form-group">
+            <label for="sugarLevel" class="form-label">
+              <i data-lucide="activity"></i> Fasting Blood Sugar / HbA1c
+            </label>
+            <input type="text" id="sugarLevel" class="form-input" placeholder="e.g. Fasting: 168 mg/dL | HbA1c: 8.2%">
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">
+              <i data-lucide="heart"></i> Associated Comorbidities
+            </label>
+            <div class="checkbox-chip-group">
+              <label class="chip-checkbox">
+                <input type="checkbox" name="diseaseCheckbox" value="High Blood Pressure (Hypertension)" checked>
+                <span>Hypertension</span>
+              </label>
+              <label class="chip-checkbox">
+                <input type="checkbox" name="diseaseCheckbox" value="Diabetic Neuropathy (Numbness/Tingling in Feet)">
+                <span>Diabetic Foot / Neuropathy</span>
+              </label>
+              <label class="chip-checkbox">
+                <input type="checkbox" name="diseaseCheckbox" value="High Cholesterol / Dyslipidemia">
+                <span>High Cholesterol</span>
+              </label>
+            </div>
+            <input type="text" id="otherDiseaseText" class="form-input mt-2" placeholder="Specify medications (e.g. Metformin, Teneligliptin, Insulin)...">
+          </div>
+        </form>
+        <div class="card-footer">
+          <div class="team-credit"><i data-lucide="sparkles"></i> Made by <strong>Team Alpha</strong></div>
+          <button type="button" id="toPage2Btn" class="btn btn-primary">
+            <span>Proceed to Step 2: Diabetic Checks</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- STEP 2: EXAMINATIONS (Retina, Nails, Symptoms) -->
+    <section class="step-section" id="page2Section">
+      <div class="card glass-card">
+        <div class="card-header">
+          <div class="header-badge">Page 2 of 4 • Diabetic Physical Indicators</div>
+          <h2 class="card-title">Diabetic Optical & Microvascular Screening</h2>
+          <p class="card-desc">Follow the 3 diabetic screening sub-steps: retinal fundus exam, nail bed capillary exam, and diabetic symptoms.</p>
+        </div>
+        <div class="sub-tabs">
+          <button class="sub-tab active" data-substep="1" id="subTab1">
+            <span class="sub-tab-badge">Step 1</span>
+            <span>Retina (Diabetic Retinopathy)</span>
+          </button>
+          <button class="sub-tab" data-substep="2" id="subTab2">
+            <span class="sub-tab-badge">Step 2</span>
+            <span>Nails (Diabetic Capillaries)</span>
+          </button>
+          <button class="sub-tab" data-substep="3" id="subTab3">
+            <span class="sub-tab-badge">Step 3</span>
+            <span>Diabetic Symptoms</span>
+          </button>
+        </div>
+        <!-- SUB-STEP 1: RETINA -->
+        <div class="substep-content active" id="subStepContent1">
+          <div class="exam-grid">
+            <div class="exam-instructions">
+              <div class="instruction-icon"><i data-lucide="eye"></i></div>
+              <h3>Step 1: Retina Checkup (Diabetic Retinopathy)</h3>
+              <p>AI computer vision screens fundus images for microaneurysms, hemorrhages, and macular edema.</p>
+              <div class="sample-actions">
+                <button type="button" class="btn btn-sm btn-outline" id="loadSampleRetinaBtn">
+                  <i data-lucide="image"></i> Load Sample Diabetic Retina Scan
+                </button>
+              </div>
+            </div>
+            <div class="upload-container">
+              <div class="dropzone" id="retinaDropzone">
+                <input type="file" id="retinaFileInput" accept="image/*" class="file-input-hidden">
+                <div class="dropzone-empty" id="retinaEmptyState">
+                  <div class="dropzone-icon pulse-soft"><i data-lucide="scan-face"></i></div>
+                  <h4>Upload or Capture Retina Fundus Image</h4>
+                  <div class="upload-button-row">
+                    <button type="button" class="btn btn-secondary btn-sm" id="retinaBrowseBtn"><i data-lucide="upload"></i> Browse</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="retinaCameraBtn"><i data-lucide="camera"></i> Live Camera</button>
+                  </div>
+                </div>
+                <div class="dropzone-preview hidden" id="retinaPreviewState">
+                  <div class="preview-img-wrapper">
+                    <img id="retinaImgPreview" src="" alt="Retina">
+                    <div class="scan-reticle"><span class="reticle-tag">DR Scan Active</span></div>
+                  </div>
+                  <div class="preview-info">
+                    <span class="preview-name" id="retinaFileName">retina.jpg</span>
+                    <button type="button" class="btn btn-ghost btn-sm text-danger" id="retinaRemoveBtn"><i data-lucide="trash-2"></i> Remove</button>
+                  </div>
+                </div>
+              </div>
+              <p class="scan-status text-success hidden" id="retinaSuccessMsg"><i data-lucide="check"></i> Retina image loaded & calibrated.</p>
+            </div>
+          </div>
+          <div class="substep-nav">
+            <div></div>
+            <button type="button" class="btn btn-primary" id="gotoSub2Btn"><span>Next: Step 2 (Nails)</span> <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+        <!-- SUB-STEP 2: NAILS -->
+        <div class="substep-content" id="subStepContent2">
+          <div class="exam-grid">
+            <div class="exam-instructions">
+              <div class="instruction-icon"><i data-lucide="hand"></i></div>
+              <h3>Step 2: Fingernail & Microvascular Analysis</h3>
+              <p>Detects capillary refill, yellow nail syndrome (glycosylation), and diabetic microcirculatory resistance.</p>
+              <div class="sample-actions">
+                <button type="button" class="btn btn-sm btn-outline" id="loadSampleNailsBtn">
+                  <i data-lucide="image"></i> Load Sample Diabetic Nail Scan
+                </button>
+              </div>
+            </div>
+            <div class="upload-container">
+              <div class="dropzone" id="nailsDropzone">
+                <input type="file" id="nailsFileInput" accept="image/*" class="file-input-hidden">
+                <div class="dropzone-empty" id="nailsEmptyState">
+                  <div class="dropzone-icon pulse-soft"><i data-lucide="scan"></i></div>
+                  <h4>Upload or Capture Fingernails</h4>
+                  <div class="upload-button-row">
+                    <button type="button" class="btn btn-secondary btn-sm" id="nailsBrowseBtn"><i data-lucide="upload"></i> Browse</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="nailsCameraBtn"><i data-lucide="camera"></i> Live Camera</button>
+                  </div>
+                </div>
+                <div class="dropzone-preview hidden" id="nailsPreviewState">
+                  <div class="preview-img-wrapper">
+                    <img id="nailsImgPreview" src="" alt="Nails">
+                    <div class="scan-reticle"><span class="reticle-tag">Capillary Pallor Scan</span></div>
+                  </div>
+                  <div class="preview-info">
+                    <span class="preview-name" id="nailsFileName">nails.jpg</span>
+                    <button type="button" class="btn btn-ghost btn-sm text-danger" id="nailsRemoveBtn"><i data-lucide="trash-2"></i> Remove</button>
+                  </div>
+                </div>
+              </div>
+              <p class="scan-status text-success hidden" id="nailsSuccessMsg"><i data-lucide="check"></i> Fingernails photo calibrated.</p>
+            </div>
+          </div>
+          <div class="substep-nav">
+            <button type="button" class="btn btn-secondary" id="backtoSub1Btn"><i data-lucide="arrow-left"></i> <span>Back: Step 1</span></button>
+            <button type="button" class="btn btn-primary" id="gotoSub3Btn"><span>Next: Step 3 (Symptoms)</span> <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+           <!-- SUB-STEP 3: SYMPTOMS -->
+        <div class="substep-content" id="subStepContent3">
+          <div class="symptoms-container">
+            <div class="symptoms-header">
+              <div class="instruction-icon"><i data-lucide="stethoscope"></i></div>
+              <div>
+                <h3>Step 3: Specific Diabetic Symptoms</h3>
+                <p>Select all symptoms you have observed recently.</p>
+              </div>
+            </div>
+            <div class="symptom-category-section">
+              <span class="category-label">Diabetic Ocular Symptoms:</span>
+              <div class="chips-selector">
+                <button type="button" class="symptom-chip" data-symptom="Blurred or fluctuating vision with sugar spikes">Blurred / Fluctuating Vision</button>
+                <button type="button" class="symptom-chip" data-symptom="Dark floating spots / cobwebs in vision">Floating Spots / Floaters</button>
+                <button type="button" class="symptom-chip" data-symptom="Difficulty with night driving or poor illumination">Night Vision Impairment</button>
+                <button type="button" class="symptom-chip" data-symptom="Washed out or faded color perception">Faded Color Vision</button>
+              </div>
+            </div>
+            <div class="symptom-category-section">
+              <span class="category-label">Diabetic Metabolic & Neuropathic Symptoms:</span>
+              <div class="chips-selector">
+                <button type="button" class="symptom-chip" data-symptom="Frequent urination, particularly at night (Polyuria)">Frequent Urination (Polyuria)</button>
+                <button type="button" class="symptom-chip" data-symptom="Excessive unquenchable thirst (Polydipsia)">Excessive Thirst (Polydipsia)</button>
+                <button type="button" class="symptom-chip" data-symptom="Tingling, pins & needles, or numbness in feet/toes">Tingling / Numb Feet</button>
+                <button type="button" class="symptom-chip" data-symptom="Burning sensation in soles of feet (Diabetic Neuropathy)">Burning Feet Sensation</button>
+                <button type="button" class="symptom-chip" data-symptom="Slow healing of minor cuts, wounds, or blisters">Slow Healing Wounds</button>
+              </div>
+            </div>
+            <div class="form-group mt-4">
+              <label for="customSymptomsText" class="form-label"><i data-lucide="message-square"></i> Additional Clinical Notes</label>
+              <textarea id="customSymptomsText" class="form-textarea" rows="4" placeholder="Describe symptoms, foot soreness, or blood sugar spikes in Pune..."></textarea>
+            </div>
+          </div>
+          <div class="substep-nav">
+            <button type="button" class="btn btn-secondary" id="backtoSub2Btn"><i data-lucide="arrow-left"></i> <span>Back: Step 2</span></button>
+            <button type="button" class="btn btn-primary" id="toPage3Btn"><span>Finish Page 2 & View Diabetic Chances (Page 3)</span> <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" id="backToPage1Btn" class="btn btn-ghost"><i data-lucide="arrow-left"></i> <span>Back to Page 1</span></button>
+          <div class="team-credit"><i data-lucide="sparkles"></i> Made by <strong>Team Alpha</strong></div>
+          <div class="footer-tip"><i data-lucide="shield-check"></i> Private clinical session</div>
+        </div>
+      </div>
+    </section>
+    <!-- STEP 3: DATA REVIEW & CHANCES -->
+    <section class="step-section" id="page3Section">
+      <div class="card glass-card">
+        <div class="card-header">
+          <div class="header-badge">Page 3 of 4 • Diabetic Risk Analysis</div>
+          <h2 class="card-title">Diabetic Data Summary & Probabilistic Chances</h2>
+        </div>
+        <div class="data-review-container">
+          <div class="review-section-header">
+            <div class="section-title-tag"><span class="num-badge">1</span> <h3>Display All Data</h3></div>
+            <button type="button" class="btn btn-sm btn-ghost" id="editDataBtn"><i data-lucide="pencil"></i> Edit Inputs</button>
+          </div>
+          <div class="summary-cards-grid">
+            <div class="summary-card">
+              <div class="summary-card-head"><i data-lucide="user-check"></i> <h4>Patient & Diabetic Vitals</h4></div>
+              <div class="summary-table">
+                <div class="summary-row"><span class="label">Patient Name:</span> <strong id="sumName">--</strong></div>
+                <div class="summary-row"><span class="label">Age / Gender:</span> <strong id="sumAgeGender">--</strong></div>
+                <div class="summary-row"><span class="label">Height & Weight:</span> <strong id="sumHeightWeight">--</strong></div>
+                <div class="summary-row"><span class="label">BMI:</span> <strong id="sumBMI">--</strong></div>
+                <div class="summary-row"><span class="label">Blood Group:</span> <strong id="sumBlood">--</strong></div>
+                <div class="summary-row"><span class="label">Pune Locality:</span> <strong id="sumLocation">--</strong></div>
+                <div class="summary-row"><span class="label">Diabetes Type:</span> <strong id="sumDiabetesType">--</strong></div>
+                <div class="summary-row"><span class="label">Duration:</span> <strong id="sumDiabetesDuration">--</strong></div>
+                <div class="summary-row"><span class="label">Reported Glycemic:</span> <strong id="sumSugarLevel">--</strong></div>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-card-head"><i data-lucide="scan-line"></i> <h4>Uploaded Scans</h4></div>
+              <div class="scans-preview-row">
+                <div class="scan-mini-box">
+                  <span class="mini-label">Retina (Fundus):</span>
+                  <div class="mini-thumbnail" id="sumRetinaThumb">
+                    <img id="sumRetinaImg" src="" alt="Retina">
+                    <span class="no-img-text" id="sumRetinaEmpty">No image</span>
+                  </div>
+                </div>
+                <div class="scan-mini-box">
+                  <span class="mini-label">Nails (Microvascular):</span>
+                  <div class="mini-thumbnail" id="sumNailsThumb">
+                    <img id="sumNailsImg" src="" alt="Nails">
+                    <span class="no-img-text" id="sumNailsEmpty">No image</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="summary-card col-span-2">
+              <div class="summary-card-head"><i data-lucide="alert-circle"></i> <h4>Reported Diabetic Symptoms</h4></div>
+              <div class="symptom-tag-list" id="sumSymptomsTags"></div>
+              <div class="symptom-notes-box">
+                <span class="notes-title">Clinical History / Notes:</span>
+                <p id="sumSymptomNotes">None provided</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chances-section">
+          <div class="review-section-header">
+            <div class="section-title-tag"><span class="num-badge">2</span> <h3>Diabetic Risk Chances</h3></div>
+            <span class="confidence-badge"><i data-lucide="cpu"></i> Model Confidence: <strong>95.8%</strong></span>
+          </div>
+          <div class="chances-dashboard">
+            <div class="overall-risk-card">
+              <div class="gauge-wrapper">
+                <svg class="radial-progress" viewBox="0 0 120 120">
+                  <circle class="radial-bg" cx="60" cy="60" r="50"></circle>
+                  <circle class="radial-bar" id="overallRiskCircle" cx="60" cy="60" r="50"></circle>
+                </svg>
+                <div class="gauge-text">
+                  <span class="gauge-score" id="overallRiskScore">74%</span>
+                  <span class="gauge-label">Diabetic Risk</span>
+                </div>
+              </div>
+              <span class="risk-status-badge badge-danger" id="overallRiskBadge">Elevated Risk</span>
+              <h4>Diabetic Complication Index</h4>
+              <p id="overallRiskDescription">Correlation detected between retinal microaneurysms and symptoms.</p>
+            </div>
+            <div class="condition-chances-grid">
+              <div class="chance-card">
+                <div class="chance-top">
+                  <span class="condition-title">Diabetic Retinopathy (DR) Chance</span>
+                  <span class="chance-percentage text-danger" id="retinopathyChance">78%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill bg-danger" id="retinopathyBar" style="width: 78%"></div></div>
+                <span class="chance-meta">Primary Factor: Fundus microaneurysms & duration &gt; 5 yrs</span>
+              </div>
+              <div class="chance-card">
+                <div class="chance-top">
+                  <span class="condition-title">Diabetic Neuropathy / Foot Perfusion Risk</span>
+                  <span class="chance-percentage text-warning" id="neuropathyChance">62%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill bg-warning" id="neuropathyBar" style="width: 62%"></div></div>
+                <span class="chance-meta">Primary Factor: Tingling in feet & capillary pallor</span>
+              </div>
+              <div class="chance-card">
+                <div class="chance-top">
+                  <span class="condition-title">Hyperglycemic Spikes / Uncontrolled HbA1c</span>
+                  <span class="chance-percentage text-danger" id="glycemicChance">71%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill bg-danger" id="glycemicBar" style="width: 71%"></div></div>
+                <span class="chance-meta">Primary Factor: Frequent urination, thirst, fatigue</span>
+              </div>
+              <div class="chance-card">
+                <div class="chance-top">
+                  <span class="condition-title">Microvascular Nephropathy Early Warning</span>
+                  <span class="chance-percentage text-info" id="nephroChance">38%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill bg-info" id="nephroBar" style="width: 38%"></div></div>
+                <span class="chance-meta">Primary Factor: Combined blood pressure and chronic glucose exposure</span>
+              </div>
+            </div>
+          </div>
+        <!-- In-Page Assistant Trigger for Page 3 -->
+        <div class="ai-assistant-banner">
+          <div class="ai-assistant-banner-info">
+            <div class="ai-assistant-banner-icon"><i data-lucide="bot"></i></div>
+            <div>
+              <h5>Need help understanding these percentages?</h5>
+              <p>GlucoDrishti AI Assistant can explain your screening scores and risk factors in simple words.</p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline-primary btn-sm" id="page3AskAiBtn">
+            <i data-lucide="message-square"></i>
+            <span>Explain My Result</span>
+          </button>
+        </div>
+        <div class="card-footer">
+          <button type="button" id="backToPage2Btn" class="btn btn-secondary"><i data-lucide="arrow-left"></i> <span>Back: Step 2</span></button>
+          <div class="team-credit"><i data-lucide="sparkles"></i> Made by <strong>Team Alpha</strong></div>
+          <button type="button" id="toPage4Btn" class="btn btn-primary"><span>Proceed to Step 4: Diagnosis & Pune Specialists</span> <i data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+    </section>
+    <!-- STEP 4: DIAGNOSIS & DOCTORS NEARBY -->
+    <section class="step-section" id="page4Section">
+      <div class="card glass-card">
+        <div class="card-header">
+          <div class="header-badge">Page 4 of 4 • Clinical Diagnosis & Pune Specialists</div>
+          <h2 class="card-title">Diabetic Diagnosis & Specialists in Pune</h2>
+        </div>
+          <div class="diagnosis-block">
+          <div class="review-section-header">
+            <div class="section-title-tag"><span class="num-badge">1</span> <h3>Clinical AI Diagnosis Summary</h3></div>
+            <button type="button" class="btn btn-sm btn-outline" id="printReportBtn"><i data-lucide="printer"></i> Print / Export Report</button>
+          </div>
+          <div class="diagnosis-summary-box">
+            <div class="summary-headline">
+              <div class="headline-icon"><i data-lucide="stethoscope"></i></div>
+              <div>
+                <h4 id="primaryDiagnosisTitle">Suspected Moderate Non-Proliferative Diabetic Retinopathy (NPDR) with Peripheral Microvascular Strain</h4>
+                <p class="headline-sub" id="diagnosisSeverityTag">Clinical Priority: <span class="badge-priority-moderate">Prompt Specialist Consultation Recommended</span></p>
+              </div>
+            </div>
+            <div class="findings-grid">
+              <div class="finding-card">
+                <div class="finding-icon"><i data-lucide="eye"></i></div>
+                <div class="finding-details">
+                  <h5>Diabetic Retinal Findings</h5>
+                  <p id="retinaFindingText">Focal microaneurysms, dot hemorrhages, and venular dilation observed.</p>
+                </div>
+              </div>
+              <div class="finding-card">
+                <div class="finding-icon"><i data-lucide="hand"></i></div>
+                <div class="finding-details">
+                  <h5>Diabetic Nail & Capillary Findings</h5>
+                  <p id="nailsFindingText">Subungual capillary pallor and delayed chromatic refill observed.</p>
+                </div>
+              </div>
+              <div class="finding-card">
+                <div class="finding-icon"><i data-lucide="activity"></i></div>
+                <div class="finding-details">
+                  <h5>Glycemic Correlation</h5>
+                  <p id="systemicFindingText">Symptom cluster indicates elevated diabetic complication risk in Pune.</p>
+                </div>
+              </div>
+            </div>
+            <div class="recommendations-box">
+              <h5><i data-lucide="clipboard-list"></i> Clinical Recommendations for Pune Patient:</h5>
+              <ol class="rec-list">
+                <li>Schedule a dilated Fundus Fluorescein Angiography (FFA) or OCT scan with a <strong>Vitreoretinal Specialist in Pune</strong>.</li>
+                <li>Comprehensive Glycemic Panel: Fasting Blood Sugar, PPBS, and HbA1c test (Lal PathLabs, Metropolis Pune).</li>
+                <li>Consult a certified <strong>Diabetologist in Pune</strong> to optimize antidiabetic regimen.</li>
+              </ol>
+            </div>
+            <div class="disclaimer-banner">
+              <i data-lucide="info"></i>
+              <div class="disclaimer-text"><strong>Medical Disclaimer:</strong> Pre-clinical AI screening tool for educational awareness. Always consult a qualified specialist in Pune.</div>
+            </div>
+            <!-- In-Page Assistant Trigger for Page 4 -->
+            <div class="ai-assistant-banner">
+              <div class="ai-assistant-banner-info">
+                <div class="ai-assistant-banner-icon"><i data-lucide="sparkles"></i></div>
+                <div>
+                  <h5>Explain Highlighted Retinal Features</h5>
+                  <p>Ask GlucoDrishti AI Assistant how microaneurysms, exudates, and vascular markers shaped this assessment.</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="page4ExplainHighlightedBtn">
+                  <i data-lucide="eye"></i>
+                  <span>Explain Highlighted Areas</span>
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="page4AskDoctorTimingBtn">
+                  <i data-lucide="help-circle"></i>
+                  <span>When to See a Doctor?</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="doctors-block">
+          <div class="review-section-header">
+            <div class="section-title-tag"><span class="num-badge">2</span> <h3>Diabetic Doctors & Retina Clinics Nearby (Pune)</h3></div>
+            <div class="location-tag"><i data-lucide="map-pin"></i> Showing specialists in <strong id="docLocationDisplay">Pune, Maharashtra</strong></div>
+          </div>
+          <div class="doctor-filter-bar">
+            <div class="filter-group">
+              <label><i data-lucide="filter"></i> Specialist Type:</label>
+              <select id="specialtyFilter" class="form-select-sm">
+                <option value="All">All Diabetic Specialists in Pune</option>
+                <option value="Diabetologist">Diabetologists & Endocrinologists</option>
+                <option value="Retina Specialist">Vitreoretinal Eye Specialists (DR)</option>
+                <option value="Diabetic Hospital">Premier Diabetes Hospitals</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label><i data-lucide="navigation"></i> Radius:</label>
+              <select id="distanceFilter" class="form-select-sm">
+                <option value="5">Within 5 km</option>
+                <option value="15" selected>Within 15 km</option>
+                <option value="40">Within 40 km (Pune & PCMC)</option>
+              </select>
+            </div>
+            <div class="search-group">
+              <input type="text" id="doctorSearchInput" class="form-input-sm" placeholder="Search doctor, hospital, or locality...">
+            </div>
+          </div>
+          <div class="doctor-directory-layout">
+            <div class="mock-map-card">
+              <div class="map-visual-placeholder">
+                <div class="map-grid-overlay"></div>
+                <div class="map-pulse-user"><div class="user-pulse"></div><i data-lucide="map-pin"></i><span id="mapUserLocTag">Pune, MH</span></div>
+                <div class="map-doctor-pin pin-1" title="Chellaram Diabetes Institute"><i data-lucide="cross"></i></div>
+                <div class="map-doctor-pin pin-2" title="Deenanath Mangeshkar Hospital"><i data-lucide="cross"></i></div>
+                <div class="map-doctor-pin pin-3" title="Ruby Hall Clinic"><i data-lucide="cross"></i></div>
+              </div>
+              <div class="map-caption"><i data-lucide="compass"></i> Active Pune Diabetic GPS Network</div>
+            </div>
+            <div class="doctor-cards-list" id="doctorCardsList"></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" id="backToPage3Btn" class="btn btn-secondary"><i data-lucide="arrow-left"></i> <span>Back: Step 3</span></button>
+          <div class="team-credit"><i data-lucide="sparkles"></i> Made by <strong>Team Alpha</strong></div>
+          <button type="button" id="startNewAssessmentBtn" class="btn btn-outline-primary"><i data-lucide="rotate-ccw"></i> <span>Start New Assessment</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       GLUCODRISHTI AI ASSISTANT CHATBOT WIDGET
+       ========================================================================== -->
+  <!-- Floating Launcher Button -->
+  <div class="chatbot-launcher-wrapper" id="chatbotLauncherWrapper">
+    <div class="launcher-tooltip" id="launcherTooltip">
+      <span class="tooltip-badge">AI Online</span>
+      <span class="tooltip-text">Ask GlucoDrishti AI Assistant</span>
+      <button type="button" class="tooltip-close" id="closeTooltipBtn" aria-label="Close message">&times;</button>
+    </div>
+    <button type="button" class="chatbot-launcher-btn" id="chatbotLauncherBtn" aria-label="Open GlucoDrishti AI Assistant" title="Open GlucoDrishti AI Assistant">
+      <div class="launcher-glow-ring"></div>
+      <div class="launcher-icon-inner">
+        <!-- Retina / Eye + AI Star SVG -->
+        <svg class="bot-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path>
+          <circle cx="12" cy="12" r="3.2"></circle>
+          <!-- Subtle AI Star sparkle -->
+          <path d="M19 3v4m-2-2h4" stroke-width="2"></path>
+        </svg>
+      </div>
+      <span class="launcher-status-dot" title="Assistant Online"></span>
+    </button>
+  </div>
+
+  <!-- Chatbot Window Container -->
+  <div class="chatbot-container closed" id="chatbotContainer" role="dialog" aria-modal="true" aria-labelledby="chatbotHeaderTitle">
+    <!-- Chatbot Header -->
+    <div class="chatbot-header">
+      <div class="chatbot-header-info">
+        <div class="chatbot-avatar">
+          <svg class="bot-header-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path>
+            <circle cx="12" cy="12" r="3.2"></circle>
+            <path d="M19 3v4m-2-2h4" stroke-width="2"></path>
+          </svg>
+          <span class="avatar-online-dot"></span>
+        </div>
+        <div>
+          <h3 class="chatbot-title" id="chatbotHeaderTitle">GlucoDrishti AI Assistant</h3>
+          <p class="chatbot-subtitle">Your AI assistant for diabetes &amp; eye health</p>
+        </div>
+      </div>
+      <div class="chatbot-header-actions">
+        <button type="button" class="chat-head-btn" id="restartChatBtn" title="Restart conversation" aria-label="Restart conversation">
+          <i data-lucide="rotate-ccw"></i>
+        </button>
+        <button type="button" class="chat-head-btn" id="closeChatbotBtn" title="Close assistant" aria-label="Close assistant">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Medical Safety Banner -->
+    <div class="chatbot-safety-banner" role="note">
+      <i data-lucide="shield-alert" class="safety-icon"></i>
+      <div class="safety-text">
+        <strong>Medical Safety:</strong> GlucoDrishti AI Assistant provides general health information and explanations of AI screening results. It does not provide a medical diagnosis. Please consult a qualified healthcare professional for medical advice.
+      </div>
+    </div>
+
+    <!-- Scrollable Chat Messages Area -->
+    <div class="chatbot-messages" id="chatbotMessages" tabindex="0">
+      <!-- Welcome Message Rendered Here Dynamically On Init -->
+    </div>
+
+    <!-- Quick Action Chips Bar (One-touch questions) -->
+    <div class="chatbot-quick-chips" id="chatbotQuickChips" aria-label="Suggested quick questions">
+      <button type="button" class="chat-chip" data-query="What is diabetic retinopathy?">What is diabetic retinopathy?</button>
+      <button type="button" class="chat-chip" data-query="How does screening work?">How does screening work?</button>
+      <button type="button" class="chat-chip" data-query="Explain my result">Explain my result</button>
+      <button type="button" class="chat-chip" data-query="Diabetes &amp; eye health">Diabetes &amp; eye health</button>
+      <button type="button" class="chat-chip" data-query="When should I see a doctor?">When should I see a doctor?</button>
+    </div>
+
+    <!-- Chatbot Input Footer -->
+    <div class="chatbot-footer">
+      <form id="chatbotForm" class="chatbot-input-row" novalidate>
+        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Ask about diabetes, eyes, or screening..." autocomplete="off" maxlength="500">
+        <button type="submit" class="chatbot-send-btn" id="chatbotSendBtn" aria-label="Send message" title="Send">
+          <i data-lucide="send"></i>
+        </button>
+      </form>
+      <div class="chatbot-footer-meta">
+        <span>Rural Healthcare &amp; Diabetic Triage • Pune</span>
+        <span>Educational AI Only</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Camera Modal -->
+  <div class="modal-overlay hidden" id="cameraModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="cameraModalTitle">Live Optical Capture</h3>
+        <button type="button" class="modal-close" id="closeCameraBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="video-wrapper">
+          <video id="webcamVideo" autoplay playsinline></video>
+          <canvas id="captureCanvas" class="hidden"></canvas>
+          <div class="camera-target-guide"><div class="guide-reticle"></div><span>Align target in frame</span></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelCameraBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="takeSnapshotBtn"><i data-lucide="camera"></i> Capture Snapshot</button>
+      </div>
+    </div>
+  </div>
+   <!-- Booking Modal -->
+  <div class="modal-overlay hidden" id="bookingModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Book Diabetic Consultation in Pune</h3>
+        <button type="button" class="modal-close" id="closeBookingBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="selected-doctor-banner" id="bookingDocInfo"></div>
+        <form id="bookingForm" class="form-grid">
+          <div class="form-group col-span-2"><label class="form-label">Patient Name</label><input type="text" id="bookPatientName" class="form-input" readonly></div>
+          <div class="form-group"><label class="form-label">Preferred Date</label><input type="date" id="bookDate" class="form-input" required></div>
+          <div class="form-group">
+            <label class="form-label">Preferred Slot</label>
+            <select id="bookTime" class="form-select">
+              <option value="10:00 AM">10:00 AM - Morning</option>
+              <option value="05:00 PM">05:00 PM - Evening OPD</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelBookingBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmBookingBtn"><i data-lucide="calendar-check"></i> Confirm</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer"></div>
+  <!-- Global Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>© 2026 GlucoDrishti AI Pune • <strong>Made by Team Alpha</strong></p>
+      <div class="footer-links">
+        <div class="team-credit"><i data-lucide="sparkles"></i> Made by <strong>Team Alpha</strong></div>
+        <span>Pune Medical Network</span> • 
+        <span>Diabetic Retinopathy Care</span>
+      </div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
